@@ -78,7 +78,6 @@ function Schemaparser() {
     };
     var allObjects = [];
 
-
     keys.forEach((element) => {
       if (Array.isArray(element)) {
         if (

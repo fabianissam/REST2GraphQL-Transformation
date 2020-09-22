@@ -19,6 +19,7 @@ const aliendatabase = [
 ];
 
 var data = JSON.stringify({ aliens: aliendatabase });
+//var data = JSON.stringify(aliendatabase);
 var resource = JSON.parse(data);
 
 function Schemaparser() {
@@ -38,17 +39,7 @@ function Schemaparser() {
     });
     return true;
   };
-  /* this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
-    var keys = "";
-    if (typeof obj === "object" && obj !== null) {
-      keys += " { ";
-      for (key in obj) {
-        keys += " " + key + " " + getAllKeysFromJSON(obj[key]);
-      }
-      keys += " } ";
-    }
-    return keys;
-  };*/
+
   this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
     var keys = [];
     if (typeof obj === "object" && obj !== null) {
@@ -61,7 +52,42 @@ function Schemaparser() {
     }
     return keys;
   };
-  /*this.removeEmpty = function removeEmpty(arr) {
+  this.findPattern = function findPattern(keys) {
+    var object = {
+      name: () => {
+        if (keys.length > 2) {
+          return "mehrere Objekte";
+        } else {
+          return keys[0];
+        }
+      },
+      object: keys,
+      counter: 1,
+    };
+    keys.forEach((element) => {});
+  };
+}
+var schemaparser = new Schemaparser();
+console.log(schemaparser.getAllKeysFromJSON(resource));
+if (undefined) {
+  console.log("undefined");
+}
+/*getAllKeysFromJSON(resource);
+console.log(allKeys);*/
+
+/* this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
+    var keys = "";
+    if (typeof obj === "object" && obj !== null) {
+      keys += " { ";
+      for (key in obj) {
+        keys += " " + key + " " + getAllKeysFromJSON(obj[key]);
+      }
+      keys += " } ";
+    }
+    return keys;
+  };*/
+
+/*this.removeEmpty = function removeEmpty(arr) {
     arr.forEach((element) => {
       if (element !== []) {
         removeEmpty(arr[element]);
@@ -71,21 +97,24 @@ function Schemaparser() {
       }
     });
   };*/
-  this.findPattern = function findPattern(keys) {
+/* this.findPattern = function findPattern(keys) {
     var object = {
       object: null,
       counter: 0,
     };
     var allObjects = [];
-
+    allObjects.push(keys);
     keys.forEach((element) => {
       if (Array.isArray(element)) {
         if (
           allObjects.find((el) => {
-            return el.object === element;
+            if (el.object === element) {
+              el.counter++;
+              return true;
+            }
+            return false;
           })
         ) {
-          element.counter++;
         } else {
           var newObject = object;
           newObject.object = element;
@@ -95,14 +124,8 @@ function Schemaparser() {
       }
     });
 
-    allObjects.push(keys);
+    // allObjects.push(keys);
 
-    return true;
+    return allObjects;
   };
-}
-
-var schemaparser = new Schemaparser();
-console.log(schemaparser.getAllKeysFromJSON(resource));
-// console.log(keys);
-/*getAllKeysFromJSON(resource);
-console.log(allKeys);*/
+}*/

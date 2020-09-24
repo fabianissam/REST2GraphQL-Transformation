@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transformation for your RESTAPI</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <form action="index.html" method="POST">
+      <template>
+
+        <h6>Endpunkt</h6>
+        <label for="Endpoints">Endpoint</label><br />
+        <input type="text" name="Endpoint"  id="Endpoint" />
+
+        <h6>Datenverarbeitung am Endpunkt</h6>
+        <label for="create">create</label><br>
+        <input type="checkbox" name="create" id="create" />
+        <input type="text" name="payloadCreate" id="payloadCreate">
+
+        <label for="read">read</label> <br>
+        <input type="checkbox" name="read" id="read" /> 
+        <input type="text" name="payloadRead" id="payloadread">
+
+
+        <label for="update">update</label> <br>
+        <input type="checkbox" name="update" id="update" /> 
+        <input type="text" name="payloadUpdate" id="payloadUpdate">
+
+
+        <label for="delete">delete</label> <br>
+        <input type="checkbox" name="delete" id="delete" />
+        <input type="text" name="payloadDelete" id="payloadDelete">
+
+      </template>
+
+      <button type="submit"></button>
+    </form>
+  </body>
+  <script src="../js/Schemaparser.js"></script>
+  <script src="../js/dynamicpage.js"></script>
+</html>

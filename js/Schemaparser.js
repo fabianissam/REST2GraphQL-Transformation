@@ -23,27 +23,49 @@ var data = JSON.stringify({ aliens: aliendatabase });
 var resource = JSON.parse(data);
 
 function Schemaparser() {
+  this.entpoints;
   this.read;
   this.write;
   this.update;
   this.delete;
   this.run = function run() {
-    endpoints.array.forEach((endpoint) => {
+    this.endpoints.array.forEach((endpoint) => {
       var data = fetch(endpoint)
         .then((response) => {
           return response.json;
         })
         .then((data) => {
-          getAllKeysFromJSON(data);
+          this.etAllKeysFromJSON(data);
         });
     });
     return true;
   };
+  /* this.getAllObjects = function getAllObjects(obj){
+    var object = {
+      name: "",
+      element: [],
+    }
+    var keys = [];
+    if (typeof obj === "object" && obj !== null) {
+      var tmpObject = object;
+      if(obj)
+      for (var key in obj) {
+        keys.push(key);
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          keys.push(this.getAllKeysFromJSON(obj[key]));
+        }
+      }
+    }
+    return keys;
 
+  }*/
+  this.method = function method(obj) {
+    return Object.entries(obj);
+  };
   this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
     var keys = [];
     if (typeof obj === "object" && obj !== null) {
-      for (key in obj) {
+      for (var key in obj) {
         keys.push(key);
         if (typeof obj[key] === "object" && obj[key] !== null) {
           keys.push(getAllKeysFromJSON(obj[key]));
@@ -68,10 +90,10 @@ function Schemaparser() {
   };
 }
 var schemaparser = new Schemaparser();
-console.log(schemaparser.getAllKeysFromJSON(resource));
-if (undefined) {
-  console.log("undefined");
-}
+
+console.log(schemaparser.method(aliendatabase));
+console.log(schemaparser.method(resource));
+
 /*getAllKeysFromJSON(resource);
 console.log(allKeys);*/
 

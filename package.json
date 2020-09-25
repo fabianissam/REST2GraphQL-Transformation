@@ -11,5 +11,8 @@
   "bugs": {
     "url": "https://github.com/fabianissam/REST2GraphQL-Transformation/issues"
   },
-  "homepage": "https://github.com/fabianissam/REST2GraphQL-Transformation#readme"
+  "homepage": "https://github.com/fabianissam/REST2GraphQL-Transformation#readme",
+  "dependencies": {
+    "mongoose": "^5.10.7"
+  }
 }

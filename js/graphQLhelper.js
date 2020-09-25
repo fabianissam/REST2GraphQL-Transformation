@@ -1,8 +1,8 @@
 
 
-module.export.graphQLSchemaTemplateProvider = {
+module.exports = {
   
-  type: "type name... { name...}",
+  type: "type name... { datatypes...}",
   schema: "schema { name... }",
   datatypes: {
     id: "ID",
@@ -11,7 +11,7 @@ module.export.graphQLSchemaTemplateProvider = {
     float: "Float",
     boolean: "Boolean",
   },
-  list: "[name...]",
+  list: "[type...]",
   needed: "!",
   
 

@@ -1,3 +1,6 @@
+const graphql = require("./graphQLhelper");
+const mongoose = require("mongoose");
+
 // Endpunkte geben eine Liste von Elementen zurück
 
 //var endpoints = document.getElementById("Endpoints").nodeValue.split(",");
@@ -16,18 +19,25 @@ const aliendatabase = [
   { id: 9, name: "kilian", points: 403432 },
   { id: 10, name: "troll", points: 402434 },
   { id: 11, name: "hihihihi", points: 404234234 },
+  { id: 12, name: "hihihihi", points: 404234234, object: { name: "object" } },
 ];
 
-var data = JSON.stringify({ aliens: aliendatabase });
+var data = JSON.stringify([
+  { aliens: aliendatabase },
+  { aliens2: aliendatabase },
+]);
 //var data = JSON.stringify(aliendatabase);
 var resource = JSON.parse(data);
 
 function Schemaparser() {
-  this.entpoints;
-  this.read;
-  this.write;
-  this.update;
-  this.delete;
+  this.entpoints = "";
+  this.read = false;
+  this.create = false;
+  this.update= false;
+  this.delete = false;
+  this.schema = "";
+  this.objects = [];
+
   this.run = function run() {
     this.endpoints.array.forEach((endpoint) => {
       var data = fetch(endpoint)
@@ -40,28 +50,39 @@ function Schemaparser() {
     });
     return true;
   };
-  /* this.getAllObjects = function getAllObjects(obj){
-    var object = {
-      name: "",
-      element: [],
-    }
-    var keys = [];
-    if (typeof obj === "object" && obj !== null) {
-      var tmpObject = object;
-      if(obj)
-      for (var key in obj) {
-        keys.push(key);
-        if (typeof obj[key] === "object" && obj[key] !== null) {
-          keys.push(this.getAllKeysFromJSON(obj[key]));
-        }
-      }
-    }
-    return keys;
-
-  }*/
+  //obj ist die json form der Daten eines Endpunktes und es werden alle objekte gefiltert 
   this.method = function method(obj) {
     return Object.entries(obj);
   };
+
+  this.graphQLSchemaCreator = function graphQLSchemaCreator(){
+    var schema = graphql.schema;
+    if(this.read){
+      schema.replace("name...", "query: Query, name...");
+    }
+    else if(this.delete || this. update || this.create){
+      schema.replace("name...", "mutation: Mutation");
+    }else{
+      schema.replace("name...", "");
+    }
+    return schema; 
+  };
+  // obj looks like [{name : "", elements: ["","",""]},{name2 : "", elements: ["","",""]}]
+  // wir gehen davon aus das alles schon richtig gemact wurde
+  this.graphQLTypeCreator = function graphQLTypeCreator(obj){
+    var allTypes = "";
+    obj.forEach( type => {
+      var tmpType = graphql.type;
+      tmpType.replace("name..." , type.name);
+      type.attributes.forEach(elements => {
+        elements.
+      });
+      allTypes += tmpType;
+    });
+    return allTypes;
+  }
+
+
   this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
     var keys = [];
     if (typeof obj === "object" && obj !== null) {
@@ -91,9 +112,29 @@ function Schemaparser() {
 }
 var schemaparser = new Schemaparser();
 
-console.log(schemaparser.method(aliendatabase));
+console.log(schemaparser.method([aliendatabase, aliendatabase]));
 console.log(schemaparser.method(resource));
 
+
+/* this.getAllObjects = function getAllObjects(obj){
+    var object = {
+      name: "",
+      element: [],
+    }
+    var keys = [];
+    if (typeof obj === "object" && obj !== null) {
+      var tmpObject = object;
+      if(obj)
+      for (var key in obj) {
+        keys.push(key);
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          keys.push(this.getAllKeysFromJSON(obj[key]));
+        }
+      }
+    }
+    return keys;
+
+  }*/
 /*getAllKeysFromJSON(resource);
 console.log(allKeys);*/
 

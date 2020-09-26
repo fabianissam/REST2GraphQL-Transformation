@@ -1,4 +1,5 @@
 const graphql = require("./graphQLhelper");
+const urlCheck = require("./urlCheck");
 const mongoose = require("mongoose");
 
 // Endpunkte geben eine Liste von Elementen zurück
@@ -33,7 +34,7 @@ function Schemaparser() {
   this.entpoints = "";
   this.read = false;
   this.create = false;
-  this.update= false;
+  this.update = false;
   this.delete = false;
   this.schema = "";
   this.objects = [];
@@ -50,39 +51,69 @@ function Schemaparser() {
     });
     return true;
   };
-  //obj ist die json form der Daten eines Endpunktes und es werden alle objekte gefiltert 
-  this.method = function method(obj) {
+  //obj ist die json form der Daten eines Endpunktes und es werden alle objekte gefiltert name wird aus der url entnommen
+  this.filterObjects = function filter0bjects(obj, name) {
+    var object = {
+      name: name,
+      element: [],
+    };
+    var tmp = obj;
+    // wenn liste
+    if (Array.isArray(obj) && obj.length === 1) {
+      var tmp = obj[0];
+    }
+    for (var key in tmp) {
+      var attributAndType = [];
+      //attribut des objekts
+      attributAndType.push(key);
+      attributAndType.push(this.graphQLTypeReturn(tmp[key]));
+      object.element.push(attributAndType);
+      //
+    }
     return Object.entries(obj);
   };
-
-  this.graphQLSchemaCreator = function graphQLSchemaCreator(){
-    var schema = graphql.schema;
-    if(this.read){
-      schema.replace("name...", "query: Query, name...");
+  // wenn object
+  //gets an Object and see which
+  this.graphQLTypeReturn = function graphQLTypeReturn(obj) {
+    var type;
+    if (Array.isArray(obj)) {
+      if (undefined) {
+      }
+    } else {
     }
-    else if(this.delete || this. update || this.create){
+  };
+  var helperfunction = function helperfunction(obj) {
+    return obj;
+  };
+  this.findPattern = function findPattern(obj) {
+    return obj;
+  };
+
+  this.graphQLSchemaCreator = function graphQLSchemaCreator() {
+    var schema = graphql.schema;
+    if (this.read) {
+      schema.replace("name...", "query: Query, name...");
+    } else if (this.delete || this.update || this.create) {
       schema.replace("name...", "mutation: Mutation");
-    }else{
+    } else {
       schema.replace("name...", "");
     }
-    return schema; 
+    return schema;
   };
   // obj looks like [{name : "", elements: ["","",""]},{name2 : "", elements: ["","",""]}]
   // wir gehen davon aus das alles schon richtig gemact wurde
-  this.graphQLTypeCreator = function graphQLTypeCreator(obj){
+  this.graphQLTypeCreator = function graphQLTypeCreator(obj) {
     var allTypes = "";
-    obj.forEach( type => {
+    obj.forEach((type) => {
       var tmpType = graphql.type;
-      tmpType.replace("name..." , type.name);
-      type.attributes.forEach(elements => {
-        elements.
+      tmpType.replace("name...", type.name);
+      type.attributes.forEach((elements) => {
+        // elements.
       });
       allTypes += tmpType;
     });
     return allTypes;
-  }
-
-
+  };
   this.getAllKeysFromJSON = function getAllKeysFromJSON(obj) {
     var keys = [];
     if (typeof obj === "object" && obj !== null) {
@@ -112,10 +143,25 @@ function Schemaparser() {
 }
 var schemaparser = new Schemaparser();
 
-console.log(schemaparser.method([aliendatabase, aliendatabase]));
-console.log(schemaparser.method(resource));
+//console.log(schemaparser.filterObjects(aliendatabase)[0]);
+//console.log(schemaparser.filterObjects(resource));
 
-
+/*  var object = {
+      name: "",
+      element: [],
+    }
+    var keys = [];
+    if (typeof obj === "object" && obj !== null) {
+      var tmpObject = object;
+      if(obj)
+      for (var key in obj) {
+        keys.push(key);
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          keys.push(this.getAllKeysFromJSON(obj[key]));
+        }
+      }
+    }
+    return keys;*/
 /* this.getAllObjects = function getAllObjects(obj){
     var object = {
       name: "",
